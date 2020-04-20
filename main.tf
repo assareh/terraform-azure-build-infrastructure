@@ -70,9 +70,11 @@ resource "azurerm_resource_group" "anotherresourcegroup" {
 }
 
 output rg1 {
-  value = azurerm_resource_group.myresourcegroup.id
+  value       = azurerm_resource_group.myresourcegroup.id
+  description = "Resource group 1"
 }
 
 output rg2 {
-  value = azurerm_resource_group.anotherresourcegroup.id
+  value       = azurerm_resource_group.anotherresourcegroup.id
+  description = "Resource group 2"
 }
