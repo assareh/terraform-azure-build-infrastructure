@@ -64,6 +64,23 @@ resource "azurerm_network_security_group" "catapp-sg" {
   }
 }
 
+resource "azurerm_route_table" "example" {
+  name                          = "acceptanceTestSecurityGroup1"
+  location                      = var.location
+  resource_group_name           = azurerm_resource_group.myresourcegroup.name
+  disable_bgp_route_propagation = false
+
+  route {
+    name           = "route1"
+    address_prefix = "10.1.0.0/16"
+    next_hop_type  = "vnetlocal"
+  }
+
+  tags = {
+    environment = "Production"
+  }
+}
+
 resource "azurerm_resource_group" "anotherresourcegroup" {
   name     = "${var.prefix}-resource-group-2"
   location = var.location
