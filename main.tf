@@ -100,7 +100,10 @@ output rg_name {
   value = azurerm_resource_group.myresourcegroup.name
 }
 
-output subnet {
-  value       = azurerm_subnet.subnet.id
-  description = "Subnet ID"
+output subnet_name {
+  value       = azurerm_subnet.subnet.name
+}
+
+output vnet_name {
+  value       = azurerm_virtual_network.vnet.name
 }
