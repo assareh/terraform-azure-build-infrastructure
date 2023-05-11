@@ -96,6 +96,10 @@ output rg2 {
   description = "Resource group 2"
 }
 
+output rg_name {
+  value = azurerm_resource_group.myresourcegroup.name
+}
+
 output subnet {
   value       = azurerm_subnet.subnet.id
   description = "Subnet ID"
