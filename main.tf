@@ -95,3 +95,8 @@ output rg2 {
   value       = azurerm_resource_group.anotherresourcegroup.id
   description = "Resource group 2"
 }
+
+output subnet {
+  value       = azurerm_subnet.subnet.id
+  description = "Subnet ID"
+}
