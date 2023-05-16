@@ -1,78 +1,33 @@
 provider "azurerm" {
 }
 
-resource "azurerm_resource_group" "myresourcegroup" {
+resource "azurerm_resource_group" "example" {
   name     = "${var.prefix}-resource-group"
   location = var.location
 }
 
-resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.prefix}-vnet"
-  location            = azurerm_resource_group.myresourcegroup.location
-  address_space       = [var.address_space]
-  resource_group_name = azurerm_resource_group.myresourcegroup.name
+resource "azurerm_network_security_group" "example" {
+  name                = "example-security-group"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
 }
 
-resource "azurerm_subnet" "subnet" {
-  name = "${var.prefix}-subnet"
-  # for_each = var.subnets...
-  virtual_network_name = azurerm_virtual_network.vnet.name
-  resource_group_name  = azurerm_resource_group.myresourcegroup.name
-  address_prefix       = var.subnet_prefix
-}
+resource "azurerm_virtual_network" "example" {
+  name                = "example-network"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
-resource "azurerm_network_security_group" "catapp-sg" {
-  name                = "${var.prefix}-sg"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.myresourcegroup.name
-
-  security_rule {
-    name                       = "HTTP"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
+  subnet {
+    name           = "subnet1"
+    address_prefix = "10.0.1.0/24"
   }
 
-  security_rule {
-    name                       = "HTTPS"
-    priority                   = 102
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "443"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "SSH"
-    priority                   = 101
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-}
-
-resource "azurerm_route_table" "example" {
-  name                          = "acceptanceTestSecurityGroup1"
-  location                      = var.location
-  resource_group_name           = azurerm_resource_group.myresourcegroup.name
-  disable_bgp_route_propagation = false
-
-  route {
-    name           = "route1"
-    address_prefix = "10.1.0.0/16"
-    next_hop_type  = "vnetlocal"
+  subnet {
+    name           = "subnet2"
+    address_prefix = "10.0.2.0/24"
+    security_group = azurerm_network_security_group.example.id
   }
 
   tags = {
@@ -80,29 +35,20 @@ resource "azurerm_route_table" "example" {
   }
 }
 
-resource "azurerm_resource_group" "anotherresourcegroup" {
-  name     = "${var.prefix}-resource-group-2"
-  location = var.location
-}
-
-output rg1 {
-  value       = azurerm_resource_group.myresourcegroup.id
-  description = "Resource group 1"
-}
-
-output rg2 {
-  value       = azurerm_resource_group.anotherresourcegroup.id
-  description = "Resource group 2"
+data "azurerm_subnet" "example" {
+  name                 = "subnet1"
+  virtual_network_name = azurerm_virtual_network.example.name
+  resource_group_name  = azurerm_resource_group.example.name
 }
 
 output rg_name {
-  value = azurerm_resource_group.myresourcegroup.name
+  value = azurerm_resource_group.example.name
 }
 
 output subnet_name {
-  value       = azurerm_subnet.subnet.name
+  value       = data.azurerm_subnet.example.name
 }
 
 output vnet_name {
-  value       = azurerm_virtual_network.vnet.name
+  value       = azurerm_virtual_network.example.name
 }
