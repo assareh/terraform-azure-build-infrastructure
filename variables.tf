@@ -18,3 +18,10 @@ variable "subnet_prefix" {
   default     = "10.0.10.0/24"
 }
 
+variable "subscription_id" {
+
+}
+
+variable "tenant_id" {
+  
+}
