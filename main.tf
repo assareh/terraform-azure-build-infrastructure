@@ -12,10 +12,10 @@ provider "azurerm" {
   features {}
 }
 
-# resource "azurerm_resource_group" "example" {
-#   name     = "${var.prefix}-resource-group"
-#   location = var.location
-# }
+resource "azurerm_resource_group" "example" {
+  name     = "${var.prefix}-resource-group"
+  location = var.location
+}
 
 # resource "azurerm_network_security_group" "example" {
 #   name                = "example-security-group"
