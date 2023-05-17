@@ -1,17 +1,14 @@
-# resource "null_resource" "cluster" {
-#   # Changes to any instance of the cluster requires re-provisioning
-#   triggers = {
-#     build_number = timestamp()
-#   }
-#   provisioner "local-exec" {
-#     command = "env"
-#   }
-# }
+resource "null_resource" "local-exec" {
+  triggers = {
+    build_number = timestamp()
+  }
+  provisioner "local-exec" {
+    command = "env"
+  }
+}
 
 provider "azurerm" {
   features {}
-  tenant_id = var.tenant_id
-  subscription_id = var.subscription_id
 }
 
 resource "azurerm_resource_group" "example" {
