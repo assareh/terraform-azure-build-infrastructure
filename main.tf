@@ -42,6 +42,12 @@ data "azurerm_subnet" "example" {
   resource_group_name  = azurerm_resource_group.example.name
 }
 
+variable "secret" {}
+
+output secret {
+value = var.secret
+}
+
 output rg_name {
   value = azurerm_resource_group.example.name
   sensitive = true
