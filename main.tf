@@ -44,6 +44,7 @@ data "azurerm_subnet" "example" {
 
 output rg_name {
   value = azurerm_resource_group.example.name
+  sensitive = true
 }
 
 output subnet_name {
