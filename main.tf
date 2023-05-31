@@ -46,6 +46,7 @@ variable "secret" {}
 
 output secret {
 value = var.secret
+  sensitive = true
 }
 
 output rg_name {
