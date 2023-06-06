@@ -44,14 +44,14 @@ data "azurerm_subnet" "example" {
 
 variable "secret" {}
 
-output secret {
-value = var.secret
-  sensitive = true
-}
+# output secret {
+# value = var.secret
+#   sensitive = true
+# }
 
 output rg_name {
   value = azurerm_resource_group.example.name
-  sensitive = true
+#  sensitive = true
 }
 
 output subnet_name {
